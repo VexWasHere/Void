@@ -1,4 +1,5 @@
 import customtkinter as ctk
+import speech_recognition as sr
 
 class TopNav(ctk.CTkFrame):
     def __init__(self, master):
@@ -70,8 +71,32 @@ class TopNav(ctk.CTkFrame):
 root = ctk.CTk()
 root.title("Modern Top Nav")
 root.geometry("800x600")
+root.after(201, lambda :root.iconbitmap('skater.ico'))
+ctk.set_appearance_mode("system")
 
 top_nav = TopNav(root)
 top_nav.pack(fill="both", expand=True)
 
 root.mainloop()
+
+def listen_for_command():
+    recognizer = sr.Recognizer()
+    microphone = sr.Microphone()
+
+    with microphone as source:
+        print("Listening for command...")
+        recognizer.adjust_for_ambient_noise(source)
+
+        audio = recognizer.listen(source, timeout=None, phrase_time_limit=None)
+
+    try:
+        command = recognizer.recognize_google(audio)
+        print(f"You said: {command}")
+        return command
+    except sr.UnknownValueError:
+        print("Sorry, I didn't understand you.")
+    except sr.RequestError:
+        print("Sorry, there's an error with the speech recognition service.")
+
+
+listen_for_command()
