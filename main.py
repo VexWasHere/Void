@@ -1,5 +1,6 @@
 import customtkinter as ctk
 import speech_recognition as sr
+from get_name import GetNameWindow, get_name
 
 class TopNav(ctk.CTkFrame):
     def __init__(self, master):
@@ -68,35 +69,21 @@ class TopNav(ctk.CTkFrame):
             else:
                 button.configure(fg_color="#333333", text_color="#ffffff", hover_color="#333333")
 
-root = ctk.CTk()
-root.title("Modern Top Nav")
-root.geometry("800x600")
-root.after(201, lambda :root.iconbitmap('skater.ico'))
-ctk.set_appearance_mode("system")
+def main():
+    name = get_name()
+    if not name:
+        window = GetNameWindow()
+        window.window.mainloop()
+        name = get_name()
+    print(f"Welcome, {name}!")
 
-top_nav = TopNav(root)
-top_nav.pack(fill="both", expand=True)
+    root = ctk.CTk()
+    root.title("Modern Top Nav")
+    root.geometry("800x600")
+    root.after(201, lambda :root.iconbitmap('skater.ico'))
+    ctk.set_appearance_mode("system")
 
-root.mainloop()
+    top_nav = TopNav(root)
+    top_nav.pack(fill="both", expand=True)
 
-def listen_for_command():
-    recognizer = sr.Recognizer()
-    microphone = sr.Microphone()
-
-    with microphone as source:
-        print("Listening for command...")
-        recognizer.adjust_for_ambient_noise(source)
-
-        audio = recognizer.listen(source, timeout=None, phrase_time_limit=None)
-
-    try:
-        command = recognizer.recognize_google(audio)
-        print(f"You said: {command}")
-        return command
-    except sr.UnknownValueError:
-        print("Sorry, I didn't understand you.")
-    except sr.RequestError:
-        print("Sorry, there's an error with the speech recognition service.")
-
-
-listen_for_command()
+    root.mainloop()
