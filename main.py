@@ -1,7 +1,10 @@
 import customtkinter as ctk
-import speech_recognition as sr
-from get_name import GetNameWindow, get_name
+import sys
+from datetime import datetime
 
+#When reopening this DON'T FORGET to fix the home label.
+
+name = "Vex"
 class TopNav(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(master)
@@ -19,6 +22,11 @@ class TopNav(ctk.CTkFrame):
         # Tab buttons frame aligned to the right
         self.tab_buttons_frame = ctk.CTkFrame(self.top_frame, corner_radius=0, fg_color="#333333", height=60)
         self.tab_buttons_frame.pack(side="right")
+        
+        def update_time():
+            current_time = datetime.now().strftime("%H:%M:%S")
+            home_label.set_text(f"Welcome, {name}! The time is {current_time}.")
+            self.after(1000, update_time)
 
         self.tabs = ["Home", "About", "Contact"]
         self.tab_buttons = []
@@ -43,7 +51,7 @@ class TopNav(ctk.CTkFrame):
         for tab in self.tabs:
             frame = ctk.CTkFrame(self.tab_content_frame, corner_radius=0, fg_color="#f0f0f0")
             if tab == "Home":
-                home_label = ctk.CTkLabel(frame, text="Welcome to the Home tab!", text_color="black")
+                home_label = ctk.CTkLabel(frame, text="", text_color="black")
                 home_label.pack(pady=20)
             elif tab == "About":
                 about_label = ctk.CTkLabel(frame, text="This is the About tab.", text_color="black")
@@ -70,12 +78,6 @@ class TopNav(ctk.CTkFrame):
                 button.configure(fg_color="#333333", text_color="#ffffff", hover_color="#333333")
 
 def main():
-    name = get_name()
-    if not name:
-        window = GetNameWindow()
-        window.window.mainloop()
-        name = get_name()
-    print(f"Welcome, {name}!")
 
     root = ctk.CTk()
     root.title("Modern Top Nav")
@@ -87,3 +89,6 @@ def main():
     top_nav.pack(fill="both", expand=True)
 
     root.mainloop()
+
+if __name__ == '__main__':
+    main()
