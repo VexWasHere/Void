@@ -1,8 +1,5 @@
 import customtkinter as ctk
-import sys
-from datetime import datetime
-
-#When reopening this DON'T FORGET to fix the home label.
+import speech_recognition as sr
 
 name = "Vex"
 class TopNav(ctk.CTkFrame):
@@ -87,7 +84,6 @@ def main():
 
     top_nav = TopNav(root)
     top_nav.pack(fill="both", expand=True)
-
     root.mainloop()
 
 if __name__ == '__main__':
