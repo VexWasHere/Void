@@ -1,6 +1,7 @@
 import customtkinter as ctk
-import speech_recognition as sr
-import pyaudio
+from win10toast import ToastNotifier
+import win11toast
+import platform
 
 class TopNav(ctk.CTkFrame):
     def __init__(self, master):
@@ -77,5 +78,21 @@ ctk.set_appearance_mode("system")
 
 top_nav = TopNav(root)
 top_nav.pack(fill="both", expand=True)
+
+n = ToastNotifier() 
+
+def send_notif():
+    p = platform.system
+    p = p.lower()
+    if p == "windows":
+        if platform.release == 10:
+            n.show_toast("Void", "Welcome to my project!", duration = 10, 
+            icon_path ="https://media.geeksforgeeks.org/wp-content/uploads/geeks.ico")
+        else:
+            print("You are not using windows 10. We will allow notifications for every system. For now, we apologize for the inconvenience.")
+    else:
+        print("You aren't using windows. We fill fix this problem in the future.")
+
+
 
 root.mainloop()
