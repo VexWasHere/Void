@@ -2,7 +2,9 @@ import customtkinter as ctk
 from win10toast import ToastNotifier
 import win11toast
 import platform
+from datetime import datetime
 
+name = "Vex"
 class TopNav(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(master)
@@ -20,6 +22,11 @@ class TopNav(ctk.CTkFrame):
         # Tab buttons frame aligned to the right
         self.tab_buttons_frame = ctk.CTkFrame(self.top_frame, corner_radius=0, fg_color="#333333", height=60)
         self.tab_buttons_frame.pack(side="right")
+        
+        def update_time():
+            current_time = datetime.now().strftime("%H:%M:%S")
+            home_label.set_text(f"Welcome, {name}! The time is {current_time}.")
+            self.after(1000, update_time)
 
         self.tabs = ["Home", "About", "Contact"]
         self.tab_buttons = []
@@ -44,7 +51,7 @@ class TopNav(ctk.CTkFrame):
         for tab in self.tabs:
             frame = ctk.CTkFrame(self.tab_content_frame, corner_radius=0, fg_color="#f0f0f0")
             if tab == "Home":
-                home_label = ctk.CTkLabel(frame, text="Welcome to the Home tab!", text_color="black")
+                home_label = ctk.CTkLabel(frame, text="", text_color="black")
                 home_label.pack(pady=20)
             elif tab == "About":
                 about_label = ctk.CTkLabel(frame, text="This is the About tab.", text_color="black")
@@ -70,14 +77,16 @@ class TopNav(ctk.CTkFrame):
             else:
                 button.configure(fg_color="#333333", text_color="#ffffff", hover_color="#333333")
 
-root = ctk.CTk()
-root.title("Modern Top Nav")
-root.geometry("800x600")
-root.after(201, lambda :root.iconbitmap('skater.ico'))
-ctk.set_appearance_mode("system")
+def main():
 
-top_nav = TopNav(root)
-top_nav.pack(fill="both", expand=True)
+    root = ctk.CTk()
+    root.title("Modern Top Nav")
+    root.geometry("800x600")
+    root.after(201, lambda :root.iconbitmap('skater.ico'))
+    ctk.set_appearance_mode("system")
+    top_nav = TopNav(root)
+    top_nav.pack(fill="both", expand=True)
+    root.mainloop()
 
 n = ToastNotifier() 
 
@@ -87,7 +96,7 @@ def send_notif():
     if p == "windows":
         if platform.release == 10:
             n.show_toast("Void", "Welcome to my project!", duration = 10, 
-            icon_path ="https://media.geeksforgeeks.org/wp-content/uploads/geeks.ico")
+            icon_path ="skater.ico")
         else:
             print("You are not using windows 10. We will allow notifications for every system. For now, we apologize for the inconvenience.")
     else:
@@ -95,4 +104,5 @@ def send_notif():
 
 
 
-root.mainloop()
+if __name__ == '__main__':
+    main()
