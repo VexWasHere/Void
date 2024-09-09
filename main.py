@@ -1,5 +1,6 @@
 import customtkinter as ctk
 import speech_recognition as sr
+from datetime import datetime
 
 name = "Vex"
 class TopNav(ctk.CTkFrame):
